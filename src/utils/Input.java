@@ -19,6 +19,7 @@ public class Input {
         Scanner input = new Scanner(System.in);
 
         while(true){
+
             if (input.hasNextInt()) {
                 choice = input.nextInt();
                 break;
