@@ -82,4 +82,14 @@ public class SecretaryController implements Controller {
     }
 
 
+    private void addLessons(){
+
+        while(true){
+
+
+        }
+
+    }
+
+
 }

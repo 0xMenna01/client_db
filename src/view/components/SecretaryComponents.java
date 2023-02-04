@@ -66,4 +66,29 @@ public class SecretaryComponents {
         System.out.println("*****************************************************************************");
     }
 
+
+    public static void showLessonBanner(){
+        System.out.println("**********************************************************************************************");
+        System.out.println("         _               _                   _   _             _                  ");
+        System.out.println("       / \\   __ _  __ _(_)_   _ _ __   __ _(_) | |    ___ ___(_) ___  _ __   ___ ");
+        System.out.println("      / _ \\ / _` |/ _` | | | | | '_ \\ / _` | | | |   / _ \\_  / |/ _ \\| '_ \\ / _ \\");
+        System.out.println("     / ___ \\ (_| | (_| | | |_| | | | | (_| | | | |__|  __// /| | (_) | | | |  __/");
+        System.out.println("    /_/   \\_\\__, |\\__, |_|\\__,_|_| |_|\\__, |_| |_____\\___/___|_|\\___/|_| |_|\\___|");
+        System.out.println("        |___/ |___/               |___/                                      ");
+        System.out.println("                                                                                              ");
+        System.out.println("**********************************************************************************************");
+    }
+
+
+    public static void showDaysLesson(){
+        System.out.println("1) Lunedì");
+        System.out.println("2) Martedì");
+        System.out.println("3) Mercoledì");
+        System.out.println("4) Giovedì");
+        System.out.println("5) Venerdì");
+        System.out.println("6) Sabato");
+        System.out.println("7) Domenica");
+    }
+
+
 }

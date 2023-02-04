@@ -1,6 +1,8 @@
 package view;
 
 import model.domain.Course;
+import model.domain.Lesson;
+import model.domain.Weekday;
 import utils.Input;
 import utils.SecretaryOption;
 import view.components.SecretaryComponents;
@@ -48,6 +50,27 @@ public class SecretaryView {
         int pool = Input.readInt();
 
         return new Course(name, price, min, max, pool);
+
+
+    }
+
+
+
+
+    public static Lesson provideLesson() throws IOException {
+
+        SecretaryComponents.showLessonBanner();
+        System.out.println("In che giorno si terrà la lezione ?");
+        SecretaryComponents.showDaysLesson();
+        System.out.print("Inserire il numero del giorno scelto: ");
+
+        int choice = Input.readInt();
+
+        Weekday day = Weekday.fromInt(choice);
+
+
+        return new Lesson();
+
 
 
     }
