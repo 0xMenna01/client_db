@@ -18,21 +18,28 @@ public class AddLessonsDAO implements GenericProcedureDAO<Lesson>{
         Date startingDate = (Date) params[4];
         int numOfWeeks = (int) params[5];
 
+        String courseName;
+        Course course;
         try {
             Connection conn = ConnectionFactory.getConnection();
-            CallableStatement cs = conn.prepareCall("{call aggiungi_lezioni(?,?,?,?,?,?)}");
+            CallableStatement cs = conn.prepareCall("{call aggiungi_lezioni(?,?,?,?,?,?,?)}");
             cs.setInt(1, numDay);
             cs.setTime(2, hour);
             cs.setInt(3, courseId);
             cs.setInt(4, duration);
             cs.setDate(5, startingDate);
             cs.setInt(6, numOfWeeks);
+            cs.registerOutParameter(7, Types.VARCHAR);
             cs.executeQuery();
+            courseName = cs.getString(7);
         } catch(SQLException e) {
-            throw new DAOException("Error: " + e.getMessage());
+            throw new DAOException("Errore: " + e.getMessage());
         }
 
+        course = new Course(courseId);
+        course.setName(courseName);
 
-        return new Lesson(Weekday.fromInt(numDay), hour, new Course(courseId), Duration.ofMinutes(duration));
+
+        return new Lesson(Weekday.fromInt(numDay), hour, course, Duration.ofMinutes(duration), numOfWeeks);
     }
 }

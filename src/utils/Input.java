@@ -8,6 +8,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -78,14 +79,13 @@ public class Input {
 
     public static Duration readDurationTime() throws IOException {
 
-       return Duration.parse("PT" + readLine());
-
+        return Duration.between(LocalTime.MIDNIGHT, readTime().toLocalTime());
     }
 
     public static Date readDate() throws IOException {
         Date choice;
         String input;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-gg");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
 
         while(true){

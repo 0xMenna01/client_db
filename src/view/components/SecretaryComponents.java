@@ -30,7 +30,7 @@ public class SecretaryComponents {
         System.out.println("*********************************************************************");
         System.out.println("* Benvenuto nel sistema di gestione della psicina!                  *");
         System.out.println("*                                                                   *");
-        System.out.println("* Scegliere una delle seguenti opzioni:                                *");
+        System.out.println("* Scegliere una delle seguenti opzioni:                             *");
         System.out.println("*                                                                   *");
         System.out.println("* 1) Aggiungi un Corso                                              *");
         System.out.println("* 2) Aggiungi Lezioni settimanali                                   *");
@@ -76,7 +76,7 @@ public class SecretaryComponents {
         System.out.println("      / _ \\ / _` |/ _` | | | | | '_ \\ / _` | | | |   / _ \\_  / |/ _ \\| '_ \\ / _ \\");
         System.out.println("     / ___ \\ (_| | (_| | | |_| | | | | (_| | | | |__|  __// /| | (_) | | | |  __/");
         System.out.println("    /_/   \\_\\__, |\\__, |_|\\__,_|_| |_|\\__, |_| |_____\\___/___|_|\\___/|_| |_|\\___|");
-        System.out.println("        |___/ |___/               |___/                                      ");
+        System.out.println("            |___/ |___/               |___/                                      ");
         System.out.println("                                                                                              ");
         System.out.println("**********************************************************************************************");
     }

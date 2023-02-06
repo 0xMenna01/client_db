@@ -2,14 +2,16 @@ package model.dao;
 
 import exception.DAOException;
 import model.domain.Course;
-import model.domain.CoursesList;
+import model.domain.ListForTable;
+import utils.ListFactoryDAO;
+
 import java.sql.*;
 
-public class CoursesDAO implements GenericProcedureDAO<CoursesList> {
+public class CoursesDAO implements GenericProcedureDAO<ListForTable<Course>> {
 
     @Override
-    public CoursesList execute(Object... params) throws DAOException {
-        CoursesList courses = new CoursesList();
+    public ListForTable<Course> execute(Object... params) throws DAOException {
+        ListForTable<Course> coursesList = null;
 
         try {
             Connection conn = ConnectionFactory.getConnection();
@@ -18,22 +20,22 @@ public class CoursesDAO implements GenericProcedureDAO<CoursesList> {
 
             if (status) {
                 ResultSet rs = cs.getResultSet();
-                if (rs.first()) {
-                    do {
-                        Course course = new Course(rs.getString(2), rs.getBigDecimal(3),
-                                rs.getInt(4), rs.getInt(5), rs.getInt(7));
+                coursesList = new ListFactoryDAO<Course>().getListByAttributes(rs);
 
-                        course.setId(rs.getInt(1));
-                        course.setStartingDate(rs.getDate(6));
-                        courses.addCourse(course);
-                    } while (rs.next());
+                while(rs.next()){
+                    Course course = new Course(rs.getString(2), rs.getBigDecimal(3),
+                            rs.getInt(4), rs.getInt(5), rs.getInt(7));
+
+                    course.setId(rs.getInt(1));
+                    course.setStartingDate(rs.getDate(6));
+                    coursesList.addToList(course);
                 }
             }
         } catch (SQLException e) {
             throw new DAOException("Error: " + e.getMessage());
         }
 
-        return courses;
+        return coursesList;
     }
 
 }

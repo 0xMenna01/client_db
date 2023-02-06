@@ -6,8 +6,8 @@ import model.dao.AddLessonsDAO;
 import model.dao.ConnectionFactory;
 import model.dao.CoursesDAO;
 import model.domain.Course;
-import model.domain.CoursesList;
 import model.domain.Lesson;
+import model.domain.ListForTable;
 import utils.SecretaryOption;
 import view.SecretaryView;
 import view.components.SecretaryComponents;
@@ -45,7 +45,7 @@ public class SecretaryController implements Controller {
                 case ADD_POOL -> System.out.println();
                 case REGISTER_ENTRANCE -> System.out.println();
                 case ENTRANCES_REPORT -> System.out.println();
-                case SHOW_COURSES -> System.out.println();
+                case SHOW_COURSES -> coursesList();
                 case SHOW_PARTICIPANT_COURSES -> System.out.println();
                 case SHOW_PARTICIPANTS -> System.out.println();
                 case QUIT -> {
@@ -87,16 +87,17 @@ public class SecretaryController implements Controller {
 
     private void addLessons(){
 
-        CoursesList courses;
-        Lesson lesson , newLesson;
+        ListForTable<Course> courses;
+        Lesson inputLesson , newLesson;
         while(true){
 
             try{
                 courses = new CoursesDAO().execute();
-                lesson = SecretaryView.provideLesson(courses.getCourses(), courses.getCoursesInfo());
-                newLesson = new AddLessonsDAO().execute(lesson.getDayNumber(), lesson.getHour(),
-                        lesson.getCourse().getId(), lesson.getDuration(), lesson.getFromDate(),
-                        lesson.getNumOfWeeks());
+                inputLesson = SecretaryView.provideLesson(courses.toStringMapsList(), courses.getColumnNames());
+                newLesson = new AddLessonsDAO().execute(inputLesson.getDayNumber(), inputLesson.getHour(),
+                        inputLesson.getCourse().getId(), inputLesson.getDuration(), inputLesson.getFromDate(),
+                        inputLesson.getNumOfWeeks());
+
                 SecretaryComponents.showMessage("Lezione del corso " + newLesson.toString() + " AGGIUNTA CON SUCCESSO!\n");
                 SecretaryView.next();
                 actionStatus = 2;
@@ -113,14 +114,14 @@ public class SecretaryController implements Controller {
     }
 
     private void coursesList(){
-        CoursesList courses;
+        ListForTable<Course> courses;
         try {
             courses = new CoursesDAO().execute();
         } catch(DAOException e) {
             throw new RuntimeException(e);
         }
 
-        SecretaryView.printCoursesTable(courses.getCourses(), courses.getCoursesInfo());
+        SecretaryView.printTable(courses.toStringMapsList(), courses.getColumnNames());
 
         try {
             SecretaryView.next();

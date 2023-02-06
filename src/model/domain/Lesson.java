@@ -1,8 +1,9 @@
 package model.domain;
 
-import java.util.Date;
+import java.sql.Date;
 import java.sql.Time;
 import java.time.Duration;
+
 
 public class Lesson {
 
@@ -11,7 +12,7 @@ public class Lesson {
     private final Course course;
     private final Duration duration;
     private Date fromDate;
-    private int numOfWeeks;
+    private final int numOfWeeks;
 
     public Lesson(Weekday day, Time hour, Course course,
                   Duration duration, Date fromDate, int numOfWeeks) {
@@ -23,19 +24,22 @@ public class Lesson {
         this.numOfWeeks = numOfWeeks;
     }
 
-    public Lesson(Weekday day, Time hour, Course course, Duration duration) {
+    public Lesson(Weekday day, Time hour, Course course, Duration duration, int numOfWeeks) {
         this.day = day;
         this.hour = hour;
         this.course = course;
         this.duration = duration;
+        this.numOfWeeks = numOfWeeks;
     }
 
     @Override
     public String toString() {
-        return this.course.toString() + "ogni " + this.day.toString()
-                + " alle " + this.hour.toString() + " per " + this.numOfWeeks + " settimane";
-    }
+        StringBuilder sb = new StringBuilder();
+        sb.append(course.toString()).append(" ogni ").append(day.toString()).append(" alle ")
+                .append(hour.toString()).append(" per ").append(numOfWeeks).append(" settimane");
+        return sb.toString();
 
+    }
 
     public Course getCourse() {
         return course;

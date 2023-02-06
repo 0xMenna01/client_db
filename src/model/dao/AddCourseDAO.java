@@ -33,7 +33,7 @@ public class AddCourseDAO implements GenericProcedureDAO<Course>{
             cs.executeQuery();
             courseId = cs.getInt(6);
         } catch(SQLException e) {
-            throw new DAOException("Error: " + e.getMessage());
+            throw new DAOException("Errore: " + e.getMessage());
         }
 
 

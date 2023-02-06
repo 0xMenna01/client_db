@@ -1,55 +1,43 @@
 package utils;
 
-import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 
-public class TablePrinter<P> {
-    public void printTable(List<P> objects, String[] columnNames) {
-        if (objects.isEmpty() || columnNames.length == 0) {
-            System.out.println("Errore: Tabella vuota");
-            return;
-        }
-        // Get the number of columns from the first object
-        int numColumns = objects.get(0).getClass().getDeclaredFields().length;
-        // Create a 2D array to store the data
-        String[][] data = new String[objects.size() + 1][numColumns];
-        data[0] = columnNames;
-
-        // Fill the data array with the attribute values
-        for (int i = 0; i < objects.size(); i++) {
-            Field[] fields = objects.get(i).getClass().getDeclaredFields();
-            for (int j = 0; j < numColumns; j++) {
-                fields[j].setAccessible(true);
-                try {
-                    data[i + 1][j] = fields[j].get(objects.get(i)).toString();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+public class TablePrinter {
+    public static void printTable(List<HashMap<String, String>> maps, List<String> columnNames) {
+        // Calcola la lunghezza massima di ogni colonna
+        int[] columnLengths = new int[columnNames.size()];
+        for (int i = 0; i < columnNames.size(); i++) {
+            columnLengths[i] = columnNames.get(i).length();
+            for (HashMap<String, String> map : maps) {
+                for (String value : map.values()) {
+                    columnLengths[i] = Math.max(columnLengths[i], value.length());
                 }
             }
         }
 
-        // Find the maximum length of each column
-        int[] columnWidths = new int[numColumns];
-        for (int i = 0; i < numColumns; i++) {
-            columnWidths[i] = columnNames[i].length();
-            for (int j = 1; j < objects.size() + 1; j++) {
-                columnWidths[i] = Math.max(columnWidths[i], data[j][i].length());
-            }
+        // Stampa la riga di intestazione
+        for (int i = 0; i < columnNames.size(); i++) {
+            System.out.printf("%-" + (columnLengths[i] + 2) + "s", columnNames.get(i));
         }
+        System.out.println();
 
-        // Print the table
-        for (int i = 0; i < objects.size() + 1; i++) {
-            for (int j = 0; j < numColumns; j++) {
-                System.out.print("| " + String.format("%-" + columnWidths[j] + "s", data[i][j]) + " ");
-            }
-            System.out.println("|");
-            if (i == 0) {
-                for (int j = 0; j < numColumns; j++) {
-                    System.out.print("+" + String.format("%-" + (columnWidths[j] + 2) + "s", "").replace(" ", "-"));
-                }
-                System.out.println("+");
+        // Stampa la riga di sottolineatura
+        for (int i = 0; i < columnNames.size(); i++) {
+            for (int j = 0; j < columnLengths[i] + 2; j++) {
+                System.out.print("-");
             }
         }
+        System.out.println();
+
+        // Stampa le righe dei dati
+        for (HashMap<String, String> map : maps) {
+            for (int i = 0; i < columnNames.size(); i++) {
+                System.out.printf("%-" + (columnLengths[i] + 2) + "s", map.get(columnNames.get(i)));
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 }
 

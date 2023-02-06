@@ -12,7 +12,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.time.Duration;
-import java.util.Date;
+import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -60,12 +61,12 @@ public class SecretaryView {
     }
 
 
-    public static Lesson provideLesson(List<Course> courses, String[] coursesInfo) throws IOException {
+    public static Lesson provideLesson(List<HashMap<String, String>> maps, List<String> columnNames) throws IOException {
 
         SecretaryComponents.showLessonBanner();
 
         SecretaryComponents.showMessage("Scegliere il corso per cui si vuole aggiungere la lezione\n\n");
-        printCoursesTable(courses, coursesInfo);
+        printTable(maps, columnNames);
         SecretaryComponents.showMessage("Inserire il codice del corso scelto: ");
         int courseId = Input.readInt();
 
@@ -84,7 +85,7 @@ public class SecretaryView {
 
         SecretaryComponents.showMessage("A partire da quando vuoi inserire la lezione ogni " + day.toString() + " ?\n");
         SecretaryComponents.showMessage("DATA (YYYY-MM-gg): ");
-        Date startingDate = Input.readDate();
+        Date startingDate = new Date(Input.readDate().getTime());
 
         SecretaryComponents.showMessage("Per quante settimane si vuole aggiungere la lezione ?\n");
         SecretaryComponents.showMessage("NUMERO SETTIMANE: ");
@@ -95,10 +96,7 @@ public class SecretaryView {
     }
 
 
-    public static void printCoursesTable(List<Course> courses, String[] columnNames){
-        TablePrinter<Course> tableCourses = new TablePrinter<>();
-        tableCourses.printTable(courses, columnNames);
-    }
+
 
     public static void next() throws IOException {
         SecretaryComponents.showMessage("Premere INVIO per continuare: ");
@@ -106,6 +104,9 @@ public class SecretaryView {
     }
 
 
+    public static void printTable(List<HashMap<String, String>> maps, List<String> columnNames){
+        TablePrinter.printTable(maps, columnNames);
+    }
 
 }
 
