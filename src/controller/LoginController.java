@@ -4,11 +4,10 @@ import exception.DAOException;
 import model.dao.LoginProcedureDAO;
 import model.domain.Credentials;
 import view.LoginView;
-
 import java.io.IOException;
 
 public class LoginController implements Controller {
-    Credentials cred = null;
+    private Credentials cred = null;
 
     @Override
     public void start() {

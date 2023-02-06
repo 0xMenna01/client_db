@@ -1,42 +1,52 @@
 package model.domain;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Time;
 import java.time.Duration;
 
 public class Lesson {
 
     private final Weekday day;
-    private final Time time;
-    private final int courseId;
+    private final Time hour;
+    private final Course course;
     private final Duration duration;
-    private final Date fromDate;
-    private final int numOfWeeks;
+    private Date fromDate;
+    private int numOfWeeks;
 
-    public Lesson(Weekday day, Time time, int courseId, Duration duration, Date fromDate, int numOfWeeks) {
+    public Lesson(Weekday day, Time hour, Course course,
+                  Duration duration, Date fromDate, int numOfWeeks) {
         this.day = day;
-        this.time = time;
-        this.courseId = courseId;
+        this.hour = hour;
+        this.course = course;
         this.duration = duration;
         this.fromDate = fromDate;
         this.numOfWeeks = numOfWeeks;
     }
 
-
-    public String getDay() {
-        return day.toString();
+    public Lesson(Weekday day, Time hour, Course course, Duration duration) {
+        this.day = day;
+        this.hour = hour;
+        this.course = course;
+        this.duration = duration;
     }
 
-    public Time getTime() {
-        return time;
+    @Override
+    public String toString() {
+        return this.course.toString() + "ogni " + this.day.toString()
+                + " alle " + this.hour.toString() + " per " + this.numOfWeeks + " settimane";
     }
 
-    public int getCourseId() {
-        return courseId;
+
+    public Course getCourse() {
+        return course;
     }
 
-    public int getDuration() {
-        return (int)duration.toMinutes();
+    public int getDayNumber() {
+        return day.getId();
+    }
+
+    public Time getHour() {
+        return hour;
     }
 
     public Date getFromDate() {
@@ -47,5 +57,8 @@ public class Lesson {
         return numOfWeeks;
     }
 
+    public int getDuration() {
+        return (int)duration.toMinutes();
+    }
 
 }

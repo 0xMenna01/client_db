@@ -2,8 +2,12 @@ package controller;
 
 import exception.DAOException;
 import model.dao.AddCourseDAO;
+import model.dao.AddLessonsDAO;
 import model.dao.ConnectionFactory;
+import model.dao.CoursesDAO;
 import model.domain.Course;
+import model.domain.CoursesList;
+import model.domain.Lesson;
 import utils.SecretaryOption;
 import view.SecretaryView;
 import view.components.SecretaryComponents;
@@ -13,7 +17,8 @@ import java.sql.SQLException;
 
 public class SecretaryController implements Controller {
 
-    Course recentAddedCourse = null;
+    private int actionStatus; // 0: Error: Back to menu, 1: Error re-do operation, 2: Operation successful
+    private Course recentAddedCourse = null;
 
     @Override
     public void start() {
@@ -34,7 +39,7 @@ public class SecretaryController implements Controller {
 
             switch(choice) {
                 case ADD_COURSE -> addCourse();
-                case ADD_LESSONS -> System.out.println();
+                case ADD_LESSONS -> addLessons();
                 case ADD_PARTICIPANT -> System.out.println();
                 case ENROLL_PARTICIPANT -> System.out.println();
                 case ADD_POOL -> System.out.println();
@@ -58,25 +63,23 @@ public class SecretaryController implements Controller {
     }
 
     private void addCourse(){
-
-        int action; // 0: Error: back to menu, 1: Error re-add course, 2: course added successfully
+        Course newCourse;
         while(true){
-
             try {
-                Course newCourse = SecretaryView.provideCourse();
+                newCourse = SecretaryView.provideCourse();
                 recentAddedCourse = new AddCourseDAO().execute(
                         newCourse.getName(), newCourse.getPrice(), newCourse.getMinParticipants(),
                         newCourse.getMaxParticipants(), newCourse.getPool());
 
-                SecretaryView.showMessage("Corso " + recentAddedCourse.toString() + " AGGIUNTO CON SUCCESSO!");
+                SecretaryComponents.showMessage("Corso " + recentAddedCourse.toString() + " AGGIUNTO CON SUCCESSO!\n");
                 SecretaryView.next();
-                action = 2;
+                actionStatus = 2;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (DAOException e) {
-                action = SecretaryView.showErrorMessage(e.getMessage());
+                actionStatus = SecretaryComponents.showErrorMessage(e.getMessage());
             }
-            if(action != 1) break;
+            if(actionStatus != 1) break;
         }
 
     }
@@ -84,11 +87,46 @@ public class SecretaryController implements Controller {
 
     private void addLessons(){
 
+        CoursesList courses;
+        Lesson lesson , newLesson;
         while(true){
 
+            try{
+                courses = new CoursesDAO().execute();
+                lesson = SecretaryView.provideLesson(courses.getCourses(), courses.getCoursesInfo());
+                newLesson = new AddLessonsDAO().execute(lesson.getDayNumber(), lesson.getHour(),
+                        lesson.getCourse().getId(), lesson.getDuration(), lesson.getFromDate(),
+                        lesson.getNumOfWeeks());
+                SecretaryComponents.showMessage("Lezione del corso " + newLesson.toString() + " AGGIUNTA CON SUCCESSO!\n");
+                SecretaryView.next();
+                actionStatus = 2;
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (DAOException e) {
+                actionStatus = SecretaryComponents.showErrorMessage(e.getMessage());
+            }
+            if(actionStatus != 1) break;
 
         }
 
+    }
+
+    private void coursesList(){
+        CoursesList courses;
+        try {
+            courses = new CoursesDAO().execute();
+        } catch(DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+        SecretaryView.printCoursesTable(courses.getCourses(), courses.getCoursesInfo());
+
+        try {
+            SecretaryView.next();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

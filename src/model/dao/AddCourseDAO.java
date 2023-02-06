@@ -19,6 +19,7 @@ public class AddCourseDAO implements GenericProcedureDAO<Course>{
         int pool = (int) params[4];
 
         int courseId;
+        Course course;
 
         try {
             Connection conn = ConnectionFactory.getConnection();
@@ -36,6 +37,9 @@ public class AddCourseDAO implements GenericProcedureDAO<Course>{
         }
 
 
-        return new Course(courseId, name, price, min, max, pool);
+        course = new Course(name, price, min, max, pool);
+        course.setId(courseId);
+
+        return course;
     }
 }

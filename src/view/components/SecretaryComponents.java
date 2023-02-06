@@ -1,5 +1,7 @@
 package view.components;
 
+import utils.Input;
+
 import java.io.IOException;
 
 public class SecretaryComponents {
@@ -28,7 +30,7 @@ public class SecretaryComponents {
         System.out.println("*********************************************************************");
         System.out.println("* Benvenuto nel sistema di gestione della psicina!                  *");
         System.out.println("*                                                                   *");
-        System.out.println("* Scegli una delle seguenti opzioni:                                *");
+        System.out.println("* Scegliere una delle seguenti opzioni:                                *");
         System.out.println("*                                                                   *");
         System.out.println("* 1) Aggiungi un Corso                                              *");
         System.out.println("* 2) Aggiungi Lezioni settimanali                                   *");
@@ -56,14 +58,14 @@ public class SecretaryComponents {
 
 
     public static void showAddCourseBanner(){
-        System.out.println("*****************************************************************************");
-        System.out.println("                 _       _     _    ____");
-        System.out.println("               / \\   __| | __| |  / ___|___  _   _ _ __ ___  ___");
-        System.out.println("              / _ \\ / _` |/ _` | | |   / _ \\| | | | '__/ __|/ _ \\");
-        System.out.println("             / ___ \\ (_| | (_| | | |__| (_) | |_| | |  \\__ \\  __/");
-        System.out.println("            /_/   \\_\\__,_|\\__,_|  \\____\\___/ \\__,_|_|  |___/\\___|");
-        System.out.println("                                                                             ");
-        System.out.println("*****************************************************************************");
+        System.out.println("*******************************************************************************************");
+        System.out.println("        _               _                   _    ____                     ");
+        System.out.println("       / \\   __ _  __ _(_)_   _ _ __   __ _(_)  / ___|___  _ __ ___  ___  ");
+        System.out.println("      / _ \\ / _` |/ _` | | | | | '_ \\ / _` | | | |   / _ \\| '__/ __|/ _ \\ ");
+        System.out.println("     / ___ \\ (_| | (_| | | |_| | | | | (_| | | | |__| (_) | |  \\__ \\ (_) |");
+        System.out.println("    /_/   \\_\\__, |\\__, |_|\\__,_|_| |_|\\__, |_|  \\____\\___/|_|  |___/\\___/ ");
+        System.out.println("             |___/ |___/               |___/                             ");
+        System.out.println("********************************************************************************************");
     }
 
 
@@ -89,6 +91,29 @@ public class SecretaryComponents {
         System.out.println("6) Sabato");
         System.out.println("7) Domenica");
     }
+
+    public static void showMessage(String message){
+        System.out.print(message);
+    }
+
+    public static int showErrorMessage(String message){
+        System.out.println(message);
+
+        int choice;
+        while(true){
+
+            System.out.print("Digitare 1 se si vuole rieffettuare l'azione, altrimenti 0: ");
+            choice = Input.readInt();
+            if(choice == 0 || choice == 1){
+                break;
+            }
+            System.out.println("Opzione non valida");
+
+        }
+
+        return choice;
+    }
+
 
 
 }

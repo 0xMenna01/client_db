@@ -6,22 +6,13 @@ import java.sql.Date;
 
 public class Course {
     private int id;
-    private final String name;
-    private final BigDecimal price;
-    private final int minParticipants;
-    private final int maxParticipants;
+    private String name;
+    private BigDecimal price;
+    private int minParticipants;
+    private int maxParticipants;
     private Date startingDate;
 
-    private final int pool;
-
-    public Course(int id, String name, BigDecimal price, int minParticipants, int maxParticipants, int pool) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.minParticipants = minParticipants;
-        this.maxParticipants = maxParticipants;
-        this.pool = pool;
-    }
+    private int pool;
 
     public Course(String name, BigDecimal price, int minParticipants, int maxParticipants, int pool) {
         this.name = name;
@@ -31,11 +22,20 @@ public class Course {
         this.pool = pool;
     }
 
+    public Course(int id){
+        this.id = id;
+    }
+
+
     @Override
     public String toString() {
         return this.name + "(Codice: " + this.id + ")";
     }
 
+
+    public int getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -58,4 +58,11 @@ public class Course {
         return pool;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStartingDate(Date startingDate) {
+        this.startingDate = startingDate;
+    }
 }
