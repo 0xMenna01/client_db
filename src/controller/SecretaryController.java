@@ -1,13 +1,11 @@
 package controller;
 
 import exception.DAOException;
-import model.dao.AddCourseDAO;
-import model.dao.AddLessonsDAO;
-import model.dao.ConnectionFactory;
-import model.dao.CoursesDAO;
+import model.dao.*;
 import model.domain.Course;
 import model.domain.Lesson;
 import model.domain.ListForTable;
+import model.domain.Pool;
 import utils.SecretaryOption;
 import view.SecretaryView;
 import view.components.SecretaryComponents;
@@ -42,7 +40,7 @@ public class SecretaryController implements Controller {
                 case ADD_LESSONS -> addLessons();
                 case ADD_PARTICIPANT -> System.out.println();
                 case ENROLL_PARTICIPANT -> System.out.println();
-                case ADD_POOL -> System.out.println();
+                case ADD_POOL -> addPool();
                 case REGISTER_ENTRANCE -> System.out.println();
                 case ENTRANCES_REPORT -> System.out.println();
                 case SHOW_COURSES -> coursesList();
@@ -109,6 +107,23 @@ public class SecretaryController implements Controller {
             }
             if(actionStatus != 1) break;
 
+        }
+
+    }
+
+    private void addPool(){
+        Pool newPool;
+        try {
+            newPool = new AddPoolDAO().execute();
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+        SecretaryComponents.showMessage(newPool.toString() + " AGGIUNTA CON SUCCESSO!\n");
+        try {
+            SecretaryView.next();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
     }
