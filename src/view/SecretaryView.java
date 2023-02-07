@@ -2,7 +2,10 @@ package view;
 
 import model.domain.Course;
 import model.domain.Lesson;
+import model.domain.Participant;
 import model.domain.Weekday;
+import model.domain.contacts.ContactType;
+import model.domain.contacts.Contacts;
 import utils.Input;
 import utils.SecretaryOption;
 import utils.TablePrinter;
@@ -30,7 +33,7 @@ public class SecretaryView {
             if (choice >= 1 && choice <= 11) {
                 break;
             }
-            SecretaryComponents.showMessage("Opzione non valida");
+            SecretaryComponents.showMessage("Opzione non valida\n");
 
         }
 
@@ -61,12 +64,12 @@ public class SecretaryView {
     }
 
 
-    public static Lesson provideLesson(List<HashMap<String, String>> maps, List<String> columnNames) throws IOException {
+    public static Lesson provideLesson(List<HashMap<String, String>> mapsCourses, List<String> columnNames) throws IOException {
 
         SecretaryComponents.showLessonBanner();
 
         SecretaryComponents.showMessage("Scegliere il corso per cui si vuole aggiungere la lezione\n\n");
-        printTable(maps, columnNames);
+        printTable(mapsCourses, columnNames);
         SecretaryComponents.showMessage("Inserire il codice del corso scelto: ");
         int courseId = Input.readInt();
 
@@ -92,6 +95,75 @@ public class SecretaryView {
         int numOfWeeks = Input.readInt();
 
         return new Lesson(day, hour, new Course(courseId), duration, startingDate, numOfWeeks);
+
+    }
+
+    public static Participant provideNewParticipant(List<HashMap<String, String>> mapsCourses,
+                                                    List<String> columnNames) throws IOException {
+        Contacts contacts = new Contacts();
+
+        SecretaryComponents.showParticipantBanner();
+
+        SecretaryComponents.showMessage("CODICE FISCALE: ");
+        String code = Input.readLine();
+
+        SecretaryComponents.showMessage("NOME: ");
+        String name = Input.readLine();
+
+        SecretaryComponents.showMessage("VIA: ");
+        String address = Input.readLine();
+
+        SecretaryComponents.showMessage("NUMERO CIVICO: ");
+        int houseNumber = Input.readInt();
+
+        SecretaryComponents.showMessage("CAP: ");
+        String postalCode = Input.readLine();
+
+        SecretaryComponents.showMessage("Scegliere il corso a cui si vuole iscrivere il cliente\n\n");
+        printTable(mapsCourses, columnNames);
+        SecretaryComponents.showMessage("Inserire il codice del corso scelto: ");
+        int courseId = Input.readInt();
+
+        SecretaryComponents.showMessage("Inserire i contatti, è richiesto almeno uno\n");
+        SecretaryComponents.showMessage("È possibile effettuare l'operazione anche più di una volta\n");
+        SecretaryComponents.showMessage("Scegliere una delle seguenti opzioni\n");
+
+        boolean isProvided = false;
+        int choice;
+        ContactType type;
+
+        while(true){
+            SecretaryComponents.showContacts();
+            SecretaryComponents.showMessage("Inserire la scelta: ");
+            choice = Input.readInt();
+            if(choice == 4 && isProvided){
+                break;
+            }
+            type = ContactType.fromInt(choice);
+            if (type == null){
+                SecretaryComponents.showMessage("Opzione non valida\n");
+            }else{
+                switch (type){
+                    case EMAIL -> {
+                        SecretaryComponents.showMessage("EMAIL: ");
+                        contacts.addEmail(Input.readLine());
+                    }
+                    case CELLPHONE -> {
+                        SecretaryComponents.showMessage("CELLULARE: ");
+                        contacts.addCellPhone(Input.readLine());
+                    }
+                    case TELEPHONE -> {
+                        SecretaryComponents.showMessage("TELEFONO: ");
+                        contacts.addTelephone(Input.readLine());
+                    }
+                }
+                isProvided = true;
+            }
+
+        }
+
+        return new Participant(code, name, address, houseNumber, postalCode, new Course(courseId), contacts);
+
 
     }
 

@@ -2,10 +2,7 @@ package controller;
 
 import exception.DAOException;
 import model.dao.*;
-import model.domain.Course;
-import model.domain.Lesson;
-import model.domain.ListForTable;
-import model.domain.Pool;
+import model.domain.*;
 import utils.SecretaryOption;
 import view.SecretaryView;
 import view.components.SecretaryComponents;
@@ -17,6 +14,7 @@ public class SecretaryController implements Controller {
 
     private int actionStatus; // 0: Error: Back to menu, 1: Error re-do operation, 2: Operation successful
     private Course recentAddedCourse = null;
+    private Participant recentAddedParticipant = null;
 
     @Override
     public void start() {
@@ -38,14 +36,14 @@ public class SecretaryController implements Controller {
             switch(choice) {
                 case ADD_COURSE -> addCourse();
                 case ADD_LESSONS -> addLessons();
-                case ADD_PARTICIPANT -> System.out.println();
+                case ADD_PARTICIPANT -> addParticipant();
                 case ENROLL_PARTICIPANT -> System.out.println();
                 case ADD_POOL -> addPool();
                 case REGISTER_ENTRANCE -> System.out.println();
                 case ENTRANCES_REPORT -> System.out.println();
                 case SHOW_COURSES -> coursesList();
                 case SHOW_PARTICIPANT_COURSES -> System.out.println();
-                case SHOW_PARTICIPANTS -> System.out.println();
+                case SHOW_PARTICIPANTS -> participantsList();
                 case QUIT -> {
                     try {
                         SecretaryComponents.showExitBanner();
@@ -69,7 +67,7 @@ public class SecretaryController implements Controller {
                         newCourse.getName(), newCourse.getPrice(), newCourse.getMinParticipants(),
                         newCourse.getMaxParticipants(), newCourse.getPool());
 
-                SecretaryComponents.showMessage("Corso " + recentAddedCourse.toString() + " AGGIUNTO CON SUCCESSO!\n");
+                SecretaryComponents.showMessage(recentAddedCourse.toString() + " AGGIUNTO CON SUCCESSO!\n");
                 SecretaryView.next();
                 actionStatus = 2;
             } catch (IOException e) {
@@ -111,6 +109,31 @@ public class SecretaryController implements Controller {
 
     }
 
+    private void addParticipant(){
+        Participant participant;
+        ListForTable<Course> courses;
+        while(true){
+            try {
+                courses = new CoursesDAO().execute();
+                participant = SecretaryView.provideNewParticipant(courses.toStringMapsList(), courses.getColumnNames());
+
+                recentAddedParticipant = new AddParticipantDAO().execute(participant.getCode(), participant.getName(),
+                        participant.getAddress(), participant.getHouseNumber(), participant.getPostalCode(),
+                        participant.getContacts().toString(), participant.getCourseSubscription().getId());
+
+                SecretaryComponents.showMessage(recentAddedParticipant.toString() + " AGGIUNTO CON SUCCESSO!\n");
+                SecretaryView.next();
+                actionStatus = 2;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (DAOException e) {
+                actionStatus = SecretaryComponents.showErrorMessage(e.getMessage());
+            }
+            if(actionStatus != 1) break;
+        }
+
+    }
+
     private void addPool(){
         Pool newPool;
         try {
@@ -144,6 +167,24 @@ public class SecretaryController implements Controller {
             throw new RuntimeException(e);
         }
     }
+
+    private void participantsList(){
+        ListForTable<Participant> participants;
+        try {
+            participants = new ParticipantsDAO().execute();
+        } catch(DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+        SecretaryView.printTable(participants.toStringMapsList(), participants.getColumnNames());
+
+        try {
+            SecretaryView.next();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 }
