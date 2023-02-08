@@ -7,10 +7,10 @@ import java.util.Date;
 public class Participant implements BaseEntityForList{
 
     private final String code;
-    private final String name;
-    private final String address;
-    private final Integer houseNumber;
-    private final String postalCode;
+    private String name;
+    private String address;
+    private Integer houseNumber;
+    private String postalCode;
     private Course courseSubscription;
     private Contacts contacts;
     private Date recentSubscription;
@@ -34,6 +34,11 @@ public class Participant implements BaseEntityForList{
         this.address = address;
         this.houseNumber = houseNumber;
         this.postalCode = postalCode;
+    }
+
+    public Participant(String code, Course courseSubscription){
+        this.code = code;
+        this.courseSubscription = courseSubscription;
     }
 
     public String getCode() {

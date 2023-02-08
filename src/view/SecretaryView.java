@@ -167,6 +167,26 @@ public class SecretaryView {
 
     }
 
+    public static Participant provideSubscription(List<HashMap<String, String>> mapsParticipants, List<String> participantColumn,
+                                                  List<HashMap<String, String>> mapsCourses, List<String> courseColumns) throws IOException {
+
+        SecretaryComponents.showSubscriptionBanner();
+
+        SecretaryComponents.showMessage("Selezionare uno dei seguenti partecipanti per l'iscrizione\n");
+        printTable(mapsParticipants, participantColumn);
+        SecretaryComponents.showMessage("Codice partecipante: ");
+        String code = Input.readLine();
+
+        SecretaryComponents.showMessage("Selezionare uno dei seguenti corsi\n");
+        printTable(mapsCourses, courseColumns);
+        SecretaryComponents.showMessage("Codice corso: ");
+        int courseId = Input.readInt();
+
+        return new Participant(code, new Course(courseId));
+
+
+    }
+
 
 
 

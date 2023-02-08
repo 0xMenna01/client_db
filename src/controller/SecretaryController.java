@@ -17,6 +17,7 @@ public class SecretaryController implements Controller {
     private Course recentAddedCourse = null;
     private Participant recentAddedParticipant = null;
 
+
     @Override
     public void start() {
 
@@ -38,7 +39,7 @@ public class SecretaryController implements Controller {
                 case ADD_COURSE -> addCourse();
                 case ADD_LESSONS -> addLessons();
                 case ADD_PARTICIPANT -> addParticipant();
-                case ENROLL_PARTICIPANT -> System.out.println();
+                case ENROLL_PARTICIPANT -> enrollParticipant();
                 case ADD_POOL -> addPool();
                 case REGISTER_ENTRANCE -> System.out.println();
                 case ENTRANCES_REPORT -> System.out.println();
@@ -95,7 +96,7 @@ public class SecretaryController implements Controller {
                         inputLesson.getCourse().getId(), inputLesson.getDuration(), inputLesson.getFromDate(),
                         inputLesson.getNumOfWeeks());
 
-                SecretaryComponents.showMessage("Lezione del corso " + newLesson.toString() + " AGGIUNTA CON SUCCESSO!\n");
+                SecretaryComponents.showMessage("Lezione del " + newLesson.toString() + " AGGIUNTA CON SUCCESSO!\n");
                 SecretaryView.next();
                 actionStatus = 2;
 
@@ -150,6 +151,37 @@ public class SecretaryController implements Controller {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private void enrollParticipant(){
+        ListForTable<Participant> participants;
+        ListForTable<Course> courses;
+        Participant subscribedParticipant, participant;
+        while(true){
+
+            try{
+                participants = new ParticipantsDAO().execute();
+                courses = new CoursesDAO().execute();
+
+                participant = SecretaryView.provideSubscription(participants.toStringMapsList(), participants.getColumnNames(),
+                        courses.toStringMapsList(), courses.getColumnNames());
+
+                subscribedParticipant = new EnrollParticipantDAO().execute(participant.getCode(),
+                        participant.getCourseSubscription().getId());
+
+                SecretaryComponents.showMessage(subscribedParticipant.toString() + " ISCRITTO CON SUCCESSO!\n");
+
+                SecretaryView.next();
+                actionStatus = 2;
+
+            } catch (IOException | AttributeException e) {
+                throw new RuntimeException(e);
+            } catch (DAOException e) {
+                actionStatus = SecretaryComponents.showErrorMessage(e.getMessage());
+            }
+            if(actionStatus != 1) break;
+
+        }
     }
 
     private void coursesList() {

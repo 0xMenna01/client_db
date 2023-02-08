@@ -18,8 +18,8 @@ public class AddLessonsDAO implements GenericProcedureDAO<Lesson>{
         Date startingDate = (Date) params[4];
         int numOfWeeks = (int) params[5];
 
-        String courseName;
         Course course;
+        String courseName;
         try {
             Connection conn = ConnectionFactory.getConnection();
             CallableStatement cs = conn.prepareCall("{call aggiungi_lezioni(?,?,?,?,?,?,?)}");

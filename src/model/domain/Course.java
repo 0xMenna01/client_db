@@ -30,7 +30,7 @@ public class Course implements BaseEntityForList{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(name).append("Corso (Codice: ").append(id).append(")");
+        sb.append("Corso (Codice: ").append(id).append(") ").append(name);
         return sb.toString();
     }
 
