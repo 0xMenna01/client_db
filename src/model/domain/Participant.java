@@ -2,6 +2,8 @@ package model.domain;
 
 import model.domain.contacts.Contacts;
 
+import java.util.Date;
+
 public class Participant implements BaseEntityForList{
 
     private final String code;
@@ -11,6 +13,7 @@ public class Participant implements BaseEntityForList{
     private final String postalCode;
     private Course courseSubscription;
     private Contacts contacts;
+    private Date recentSubscription;
 
 
     public Participant(String code, String name, String address, int houseNumber,
@@ -31,7 +34,6 @@ public class Participant implements BaseEntityForList{
         this.address = address;
         this.houseNumber = houseNumber;
         this.postalCode = postalCode;
-
     }
 
     public String getCode() {
@@ -62,6 +64,10 @@ public class Participant implements BaseEntityForList{
         return contacts;
     }
 
+    public void setRecentSubscription(Date recentSubscription) {
+        this.recentSubscription = recentSubscription;
+    }
+
     @Override
     public String getValueByAttributeName(String attributeName) {
         String value = null;
@@ -71,6 +77,7 @@ public class Participant implements BaseEntityForList{
             case "via" -> value = address;
             case "numeroCivico" -> value = houseNumber.toString();
             case "cap" -> value = postalCode;
+            case "ultimaIscrizione" -> value = recentSubscription.toString();
         }
 
         return value;

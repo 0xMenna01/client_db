@@ -1,5 +1,7 @@
 package model.domain;
 
+import exception.AttributeException;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,7 +15,7 @@ public interface GenericListForTable<P> {
 
     List<String> getColumnNames(); // Returns all attributes names of a given object (DB entity)
 
-    List<HashMap<String, String>> toStringMapsList();
+    List<HashMap<String, String>> toStringMapsList() throws AttributeException;
     /*
     Converts the list of a given object (DB entity) into a list of mappings.
     The mapping serves to map a key value (attribute of an entity) to its given value.

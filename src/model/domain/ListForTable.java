@@ -1,5 +1,7 @@
 package model.domain;
 
+import exception.AttributeException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,12 +38,17 @@ public class ListForTable<P extends BaseEntityForList> implements GenericListFor
     }
 
     @Override
-    public List<HashMap<String, String>> toStringMapsList() {
+    public List<HashMap<String, String>> toStringMapsList() throws AttributeException {
         List<HashMap<String, String>> listMap = new ArrayList<>();
+        String attributeValue;
 
         for(P obj: list){
             HashMap<String, String> map = new HashMap<>();
             for(String columnName: columnNames){
+                attributeValue = obj.getValueByAttributeName(columnName);
+                if(attributeValue == null){
+                    throw new AttributeException("An attribute is missing");
+                }
                 map.put(columnName ,obj.getValueByAttributeName(columnName));
             }
             listMap.add(map);

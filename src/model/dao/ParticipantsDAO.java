@@ -29,6 +29,8 @@ public class ParticipantsDAO implements GenericProcedureDAO<ListForTable<Partici
                     Participant participant = new Participant(rs.getString(1), rs.getString(2),
                             rs.getString(3), rs.getInt(4), rs.getString(5));
 
+                    participant.setRecentSubscription(rs.getDate(6));
+
                     participantsList.addToList(participant);
                 }
             }
