@@ -196,6 +196,7 @@ public class SecretaryController implements Controller {
 
     }
 
+
     private void participantsList() {
         ListForTable<Participant> participants;
         try {
