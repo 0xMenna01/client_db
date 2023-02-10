@@ -41,6 +41,12 @@ public class Participant implements BaseEntityForList{
         this.courseSubscription = courseSubscription;
     }
 
+    public Participant(String code){
+        this.code = code;
+    }
+
+
+
     public String getCode() {
         return code;
     }

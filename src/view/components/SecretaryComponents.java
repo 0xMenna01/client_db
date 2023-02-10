@@ -104,6 +104,43 @@ public class SecretaryComponents {
     }
 
 
+    public static void showEntranceBanner(){
+        System.out.println("***********************************************************************");
+        System.out.println("             ___                               _ ");
+        System.out.println("            |_ _|_ __   __ _ _ __ ___  ___ ___(_)");
+        System.out.println("             | || '_ \\ / _` | '__/ _ \\/ __/ __| |");
+        System.out.println("             | || | | | (_| | | |  __/\\__ \\__ \\ |");
+        System.out.println("            |___|_| |_|\\__, |_|  \\___||___/___/_|");
+        System.out.println("                       |___/                      ");
+        System.out.println("***********************************************************************");
+    }
+
+
+
+
+    public static void showParticipantCoursesBanner(){
+        System.out.println("************************************************************************************************************");
+        System.out.println("         ____               _   ____            _            _                   _       ");
+        System.out.println("         / ___|___  _ __ ___(_) |  _ \\ __ _ _ __| |_ ___  ___(_)_ __   __ _ _ __ | |_ ___ ");
+        System.out.println("        | |   / _ \\| '__/ __| | | |_) / _` | '__| __/ _ \\/ __| | '_ \\ / _` | '_ \\| __/ _ \\");
+        System.out.println("        | |__| (_) | |  \\__ \\ | |  __/ (_| | |  | ||  __/ (__| | |_) | (_| | | | | ||  __/");
+        System.out.println("         \\____\\___/|_|  |___/_| |_|   \\__,_|_|   \\__\\___|\\___|_| .__/ \\__,_|_| |_|\\__\\___|");
+        System.out.println("                                                               |_|                         ");
+        System.out.println("************************************************************************************************************");
+    }
+
+    public static void shoeReportBanner() {
+        System.out.println("**********************************************************************************************");
+        System.out.println("         ____                       _     ___                               _ ");
+        System.out.println("        |  _ \\ ___ _ __   ___  _ __| |_  |_ _|_ __   __ _ _ __ ___  ___ ___(_)");
+        System.out.println("        | |_) / _ \\ '_ \\ / _ \\| '__| __|  | || '_ \\ / _` | '__/ _ \\/ __/ __| |");
+        System.out.println("        |  _ <  __/ |_) | (_) | |  | |_   | || | | | (_| | | |  __/\\__ \\__ \\ |");
+        System.out.println("        |_| \\_\\___| .__/ \\___/|_|   \\__| |___|_| |_|\\__, |_|  \\___||___/___/_|");
+        System.out.println("                  |_|                               |___/                      ");
+        System.out.println("**********************************************************************************************");
+    }
+
+
 
 
     public static void showDaysLesson(){
@@ -121,6 +158,12 @@ public class SecretaryComponents {
         System.out.println("2) Telefono");
         System.out.println("3) Cellulare");
         System.out.println("4) Fine");
+    }
+
+    public static void showIntervals(){
+        System.out.println("1) Giornaliera");
+        System.out.println("2) Settimanale");
+        System.out.println("3) Mensile");
     }
 
     public static void showMessage(String message){

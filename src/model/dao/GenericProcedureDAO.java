@@ -8,4 +8,6 @@ public interface GenericProcedureDAO<P> {
 
     P execute(Object... params) throws DAOException, SQLException;
 
+
+
 }

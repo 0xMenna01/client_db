@@ -1,11 +1,9 @@
 package view;
 
-import model.domain.Course;
-import model.domain.Lesson;
-import model.domain.Participant;
-import model.domain.Weekday;
+import model.domain.*;
 import model.domain.contacts.ContactType;
 import model.domain.contacts.Contacts;
+import model.domain.report.ReportEntrances;
 import utils.Input;
 import utils.SecretaryOption;
 import utils.TablePrinter;
@@ -167,13 +165,27 @@ public class SecretaryView {
 
     }
 
-    public static Participant provideSubscription(List<HashMap<String, String>> mapsParticipants, List<String> participantColumn,
+
+    public static Entrance provideEntrance(List<HashMap<String, String>> mapsParticipants, List<String> participantColumns) throws IOException {
+
+        SecretaryComponents.showEntranceBanner();
+
+        SecretaryComponents.showMessage("Chi effettua l'ingresso presso la piscina ?\n\n");
+        printTable(mapsParticipants, participantColumns);
+        SecretaryComponents.showMessage("CODICE FISCALE: ");
+        String code = Input.readLine();
+
+        return new Entrance(new Participant(code));
+
+    }
+
+    public static Participant provideSubscription(List<HashMap<String, String>> mapsParticipants, List<String> participantColumns,
                                                   List<HashMap<String, String>> mapsCourses, List<String> courseColumns) throws IOException {
 
         SecretaryComponents.showSubscriptionBanner();
 
-        SecretaryComponents.showMessage("Selezionare uno dei seguenti partecipanti per l'iscrizione\n");
-        printTable(mapsParticipants, participantColumn);
+        SecretaryComponents.showMessage("Selezionare uno dei seguenti partecipanti per l'iscrizione\n\n");
+        printTable(mapsParticipants, participantColumns);
         SecretaryComponents.showMessage("Codice partecipante: ");
         String code = Input.readLine();
 
@@ -184,6 +196,55 @@ public class SecretaryView {
 
         return new Participant(code, new Course(courseId));
 
+
+    }
+
+    public static Participant provideParticipant(List<HashMap<String, String>> mapsParticipants, List<String> participantColumns) throws IOException {
+
+        SecretaryComponents.showParticipantCoursesBanner();
+
+        SecretaryComponents.showMessage("Seleziona il partecipante di cui si vogliono conoscere i corsi\n\n");
+        printTable(mapsParticipants, participantColumns);
+        SecretaryComponents.showMessage("CODICE FISCALE: ");
+        String code = Input.readLine();
+
+        return new Participant(code);
+
+    }
+
+    public static ReportEntrances provideReport() throws IOException {
+
+        ReportEntrances report;
+        SecretaryComponents.shoeReportBanner();
+
+        SecretaryComponents.showMessage("DATA INIZIO (YYYY-MM-gg): ");
+        Date date = new Date(Input.readDate().getTime());
+
+        IntervalType interval;
+        while(true){
+
+            SecretaryComponents.showMessage("Selezionare la cadenza temporale dell'intervallo\n");
+            SecretaryComponents.showIntervals();
+            SecretaryComponents.showMessage("Scelta: ");
+            interval = IntervalType.fromInt(Input.readInt());
+
+            if(interval != null) break;
+            else SecretaryComponents.showMessage("Opzione non valida\n");
+
+        }
+
+        switch (interval){
+            case DAILY -> SecretaryComponents.showMessage("NUMERO DI GIORNI: ");
+            case WEEKLY -> SecretaryComponents.showMessage("NUMERO DI SETTIMANE: ");
+            case MONTHLY -> SecretaryComponents.showMessage("NUMERO DI MESI: ");
+        }
+
+        int inputInterval = Input.readInt();
+
+        report = new ReportEntrances(date, interval);
+        report.setNumOfDays(inputInterval);
+
+        return report;
 
     }
 

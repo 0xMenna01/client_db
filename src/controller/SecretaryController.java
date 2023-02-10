@@ -4,6 +4,7 @@ import exception.AttributeException;
 import exception.DAOException;
 import model.dao.*;
 import model.domain.*;
+import model.domain.report.ReportEntrances;
 import utils.SecretaryOption;
 import view.SecretaryView;
 import view.components.SecretaryComponents;
@@ -41,10 +42,10 @@ public class SecretaryController implements Controller {
                 case ADD_PARTICIPANT -> addParticipant();
                 case ENROLL_PARTICIPANT -> enrollParticipant();
                 case ADD_POOL -> addPool();
-                case REGISTER_ENTRANCE -> System.out.println();
-                case ENTRANCES_REPORT -> System.out.println();
+                case REGISTER_ENTRANCE -> executeEntrance();
+                case ENTRANCES_REPORT -> generateReportEntrances();
                 case SHOW_COURSES -> coursesList();
-                case SHOW_PARTICIPANT_COURSES -> System.out.println();
+                case SHOW_PARTICIPANT_COURSES -> participantsCoursesList();
                 case SHOW_PARTICIPANTS -> participantsList();
                 case QUIT -> {
                     try {
@@ -153,6 +154,31 @@ public class SecretaryController implements Controller {
 
     }
 
+    private void executeEntrance(){
+        Entrance participantEntrance, enteredParticipant;
+        ListForTable<Participant> participants;
+
+        try {
+            participants = new ParticipantsDAO().execute();
+            participantEntrance = SecretaryView.provideEntrance(participants.toStringMapsList(), participants.getColumnNames());
+            enteredParticipant = new EntranceDAO().execute(participantEntrance.getParticipant().getCode());
+            SecretaryComponents.showMessage(enteredParticipant.toString() + "AVVENUTO CON SUCCESSO!\n");
+
+        } catch (IOException | AttributeException e) {
+            throw new RuntimeException(e);
+        } catch (DAOException e) {
+            SecretaryComponents.showMessage(e.getMessage().concat("\n"));
+        }
+
+        try {
+            SecretaryView.next();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
     private void enrollParticipant(){
         ListForTable<Participant> participants;
         ListForTable<Course> courses;
@@ -184,6 +210,42 @@ public class SecretaryController implements Controller {
         }
     }
 
+
+    private void generateReportEntrances(){
+        ReportEntrances inputReport, finalReport;
+
+        while(true){
+
+            try {
+
+                inputReport = SecretaryView.provideReport();
+
+                finalReport = new ReportEntrancesDAO().execute(inputReport.getFromDate(), inputReport.getNumOfDays());
+                SecretaryComponents.showMessage(finalReport.toString().concat("\n\n"));
+
+                SecretaryComponents.showMessage("DAILY REPORT DETAILS\n\n");
+                SecretaryView.printTable(finalReport.getDetails().toStringMapsList(),
+                        finalReport.getDetails().getColumnNames());
+
+                SecretaryView.next();
+                actionStatus = 2;
+
+            } catch (IOException | AttributeException e) {
+                throw new RuntimeException(e);
+            } catch (DAOException e) {
+                actionStatus = SecretaryComponents.showErrorMessage(e.getMessage());
+            }
+            if(actionStatus != 1) break;
+        }
+
+
+
+
+
+    }
+
+
+
     private void coursesList() {
         ListForTable<Course> courses;
         try {
@@ -195,6 +257,27 @@ public class SecretaryController implements Controller {
         }
 
     }
+
+    private void participantsCoursesList() {
+
+        Participant participant;
+        ListForTable<Participant> allParticipants;
+        ListForTable<Course> participantCourses;
+
+        try {
+            allParticipants = new ParticipantsDAO().execute();
+            participant = SecretaryView.provideParticipant(allParticipants.toStringMapsList(), allParticipants.getColumnNames());
+            participantCourses = new ParticipantCoursesDAO().execute(participant.getCode());
+
+            SecretaryView.printTable(participantCourses.toStringMapsList(), participantCourses.getColumnNames());
+
+            SecretaryView.next();
+        } catch(DAOException | AttributeException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
 
     private void participantsList() {
