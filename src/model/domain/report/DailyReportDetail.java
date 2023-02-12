@@ -22,7 +22,7 @@ public class DailyReportDetail implements BaseEntityForList {
         switch (attributeName){
             case "data" -> value = date.toString();
             case "numeroIngressi" -> value = entrances.toString();
-            case "numeroIscritti" -> value = subscriptions.toString();
+            case "numeroPrevisto" -> value = subscriptions.toString();
         }
 
         return value;

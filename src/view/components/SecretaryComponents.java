@@ -40,8 +40,8 @@ public class SecretaryComponents {
         System.out.println("* 6) Registra un ingresso                                           *");
         System.out.println("* 7) Fornisci un report degli ingressi                              *");
         System.out.println("* 8) Mostra tutti i corsi                                           *");
-        System.out.println("* 9) Mostra i corsi di un partecipan                                *");
-        System.out.println("* 10) Mostra le informazioni di un partecipante                     *");
+        System.out.println("* 9) Mostra i corsi di un partecipante                              *");
+        System.out.println("* 10) Mostra tutti i partecipanti                                   *");
         System.out.println("* 11) Esci                                                          *");
         System.out.println("*********************************************************************");
     }

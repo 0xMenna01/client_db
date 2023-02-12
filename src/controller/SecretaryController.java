@@ -14,10 +14,6 @@ import java.sql.SQLException;
 
 public class SecretaryController implements Controller {
 
-    private int actionStatus; // 0: Error: Back to menu, 1: Error re-do operation, 2: Operation successful
-    private Course recentAddedCourse = null;
-    private Participant recentAddedParticipant = null;
-
 
     @Override
     public void start() {
@@ -62,23 +58,23 @@ public class SecretaryController implements Controller {
     }
 
     private void addCourse(){
-        Course newCourse;
+        Course newCourse, course;
         while(true){
             try {
                 newCourse = SecretaryView.provideCourse();
-                recentAddedCourse = new AddCourseDAO().execute(
+                course = new AddCourseDAO().execute(
                         newCourse.getName(), newCourse.getPrice(), newCourse.getMinParticipants(),
                         newCourse.getMaxParticipants(), newCourse.getPool());
 
-                SecretaryComponents.showMessage(recentAddedCourse.toString() + " AGGIUNTO CON SUCCESSO!\n");
+                SecretaryComponents.showMessage(course.toString() + " AGGIUNTO CON SUCCESSO!\n");
                 SecretaryView.next();
-                actionStatus = 2;
+                break;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (DAOException e) {
-                actionStatus = SecretaryComponents.showErrorMessage(e.getMessage());
+                int choice = SecretaryComponents.showErrorMessage(e.getMessage());
+                if(choice == 0) break;
             }
-            if(actionStatus != 1) break;
         }
 
     }
@@ -99,40 +95,39 @@ public class SecretaryController implements Controller {
 
                 SecretaryComponents.showMessage("Lezione del " + newLesson.toString() + " AGGIUNTA CON SUCCESSO!\n");
                 SecretaryView.next();
-                actionStatus = 2;
-
+                break;
             } catch (IOException | AttributeException e) {
                 throw new RuntimeException(e);
             } catch (DAOException e) {
-                actionStatus = SecretaryComponents.showErrorMessage(e.getMessage());
+                int choice = SecretaryComponents.showErrorMessage(e.getMessage());
+                if(choice == 0) break;
             }
-            if(actionStatus != 1) break;
 
         }
 
     }
 
     private void addParticipant(){
-        Participant participant;
+        Participant participant, addedParticipant;
         ListForTable<Course> courses;
         while(true){
             try {
                 courses = new CoursesDAO().execute();
                 participant = SecretaryView.provideNewParticipant(courses.toStringMapsList(), courses.getColumnNames());
 
-                recentAddedParticipant = new AddParticipantDAO().execute(participant.getCode(), participant.getName(),
+                addedParticipant = new AddParticipantDAO().execute(participant.getCode(), participant.getName(),
                         participant.getAddress(), participant.getHouseNumber(), participant.getPostalCode(),
                         participant.getContacts().toString(), participant.getCourseSubscription().getId());
 
-                SecretaryComponents.showMessage(recentAddedParticipant.toString() + " AGGIUNTO CON SUCCESSO!\n");
+                SecretaryComponents.showMessage(addedParticipant.toString() + " AGGIUNTO CON SUCCESSO!\n");
                 SecretaryView.next();
-                actionStatus = 2;
+                break;
             } catch (IOException | AttributeException e) {
                 throw new RuntimeException(e);
             } catch (DAOException e) {
-                actionStatus = SecretaryComponents.showErrorMessage(e.getMessage());
+                int choice = SecretaryComponents.showErrorMessage(e.getMessage());
+                if(choice == 0) break;
             }
-            if(actionStatus != 1) break;
         }
 
     }
@@ -162,7 +157,7 @@ public class SecretaryController implements Controller {
             participants = new ParticipantsDAO().execute();
             participantEntrance = SecretaryView.provideEntrance(participants.toStringMapsList(), participants.getColumnNames());
             enteredParticipant = new EntranceDAO().execute(participantEntrance.getParticipant().getCode());
-            SecretaryComponents.showMessage(enteredParticipant.toString() + "AVVENUTO CON SUCCESSO!\n");
+            SecretaryComponents.showMessage(enteredParticipant.toString() + " AVVENUTO CON SUCCESSO!\n");
 
         } catch (IOException | AttributeException e) {
             throw new RuntimeException(e);
@@ -198,14 +193,13 @@ public class SecretaryController implements Controller {
                 SecretaryComponents.showMessage(subscribedParticipant.toString() + " ISCRITTO CON SUCCESSO!\n");
 
                 SecretaryView.next();
-                actionStatus = 2;
-
+                break;
             } catch (IOException | AttributeException e) {
                 throw new RuntimeException(e);
             } catch (DAOException e) {
-                actionStatus = SecretaryComponents.showErrorMessage(e.getMessage());
+                int choice = SecretaryComponents.showErrorMessage(e.getMessage());
+                if(choice == 0) break;
             }
-            if(actionStatus != 1) break;
 
         }
     }
@@ -223,25 +217,20 @@ public class SecretaryController implements Controller {
                 finalReport = new ReportEntrancesDAO().execute(inputReport.getFromDate(), inputReport.getNumOfDays());
                 SecretaryComponents.showMessage(finalReport.toString().concat("\n\n"));
 
-                SecretaryComponents.showMessage("DAILY REPORT DETAILS\n\n");
+                SecretaryComponents.showMessage("DETTAGLI REPORT ENTRATE GIORNALIERE\n\n");
                 SecretaryView.printTable(finalReport.getDetails().toStringMapsList(),
                         finalReport.getDetails().getColumnNames());
 
                 SecretaryView.next();
-                actionStatus = 2;
+                break;
 
             } catch (IOException | AttributeException e) {
                 throw new RuntimeException(e);
             } catch (DAOException e) {
-                actionStatus = SecretaryComponents.showErrorMessage(e.getMessage());
+                int choice = SecretaryComponents.showErrorMessage(e.getMessage());
+                if(choice == 0) break;
             }
-            if(actionStatus != 1) break;
         }
-
-
-
-
-
     }
 
 
@@ -279,7 +268,6 @@ public class SecretaryController implements Controller {
     }
 
 
-
     private void participantsList() {
         ListForTable<Participant> participants;
         try {
@@ -291,7 +279,6 @@ public class SecretaryController implements Controller {
         }
 
     }
-
 
 
 }

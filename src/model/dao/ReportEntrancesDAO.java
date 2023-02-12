@@ -28,6 +28,7 @@ public class ReportEntrancesDAO implements GenericProcedureDAO<ReportEntrances>{
             cs.registerOutParameter(3, Types.INTEGER);
             cs.registerOutParameter(4, Types.INTEGER);
             boolean status = cs.execute();
+
             entrances = cs.getInt(3);
             expectedBySubscription = cs.getInt(4);
 
@@ -53,3 +54,4 @@ public class ReportEntrancesDAO implements GenericProcedureDAO<ReportEntrances>{
         return  report;
     }
 }
+
