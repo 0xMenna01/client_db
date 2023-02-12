@@ -1,6 +1,7 @@
-package model.dao;
+package model.dao.secretary;
 
 import exception.DAOException;
+import model.dao.GenericProcedureDAO;
 import model.domain.Entrance;
 import model.domain.Participant;
 import java.sql.*;

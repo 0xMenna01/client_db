@@ -1,6 +1,7 @@
-package model.dao;
+package model.dao.secretary;
 
 import exception.DAOException;
+import model.dao.GenericProcedureDAO;
 import model.domain.Course;
 import java.math.BigDecimal;
 import java.sql.CallableStatement;
@@ -8,7 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
-public class AddCourseDAO implements GenericProcedureDAO<Course>{
+public class AddCourseDAO implements GenericProcedureDAO<Course> {
 
     @Override
     public Course execute(Object... params) throws DAOException {

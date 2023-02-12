@@ -1,13 +1,14 @@
-package model.dao;
+package model.dao.secretary;
 
 import exception.DAOException;
+import model.dao.GenericProcedureDAO;
 import model.domain.Pool;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
-public class AddPoolDAO implements GenericProcedureDAO<Pool>{
+public class AddPoolDAO implements GenericProcedureDAO<Pool> {
 
     @Override
     public Pool execute(Object... params) throws DAOException {

@@ -1,13 +1,14 @@
-package model.dao;
+package model.dao.secretary;
 
 import exception.DAOException;
+import model.dao.GenericProcedureDAO;
 import model.domain.Course;
 import model.domain.Lesson;
 import model.domain.Weekday;
 import java.sql.*;
 import java.time.Duration;
 
-public class AddLessonsDAO implements GenericProcedureDAO<Lesson>{
+public class AddLessonsDAO implements GenericProcedureDAO<Lesson> {
 
     @Override
     public Lesson execute(Object... params) throws DAOException {

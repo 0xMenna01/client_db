@@ -1,6 +1,8 @@
-package model.dao;
+package model.dao.login;
 
 import exception.DAOException;
+import model.dao.secretary.ConnectionFactory;
+import model.dao.GenericProcedureDAO;
 import model.domain.Credentials;
 
 import java.sql.CallableStatement;

@@ -1,21 +1,27 @@
-package model.dao;
+package model.dao.secretary;
 
 import exception.DAOException;
+import model.dao.GenericProcedureDAO;
 import model.domain.Course;
 import model.domain.ListForTable;
 import utils.ListFactoryDAO;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class CoursesDAO implements GenericProcedureDAO<ListForTable<Course>> {
+public class ParticipantCoursesDAO implements GenericProcedureDAO<ListForTable<Course>> {
 
     @Override
     public ListForTable<Course> execute(Object... params) throws DAOException {
+        String participantCode = (String) params[0];
         ListForTable<Course> coursesList = null;
 
         try {
             Connection conn = ConnectionFactory.getConnection();
-            CallableStatement cs = conn.prepareCall("{call ottieni_corsi()}");
+            CallableStatement cs = conn.prepareCall("{call ottieni_corsi_partecipante(?)}");
+            cs.setString(1, participantCode);
             boolean status = cs.execute();
 
             if (status) {
@@ -37,5 +43,4 @@ public class CoursesDAO implements GenericProcedureDAO<ListForTable<Course>> {
 
         return coursesList;
     }
-
 }

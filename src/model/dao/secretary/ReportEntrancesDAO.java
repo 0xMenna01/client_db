@@ -1,6 +1,7 @@
-package model.dao;
+package model.dao.secretary;
 
 import exception.DAOException;
+import model.dao.GenericProcedureDAO;
 import model.domain.report.IntervalType;
 import model.domain.ListForTable;
 import model.domain.report.DailyReportDetail;
@@ -9,7 +10,7 @@ import utils.ListFactoryDAO;
 
 import java.sql.*;
 
-public class ReportEntrancesDAO implements GenericProcedureDAO<ReportEntrances>{
+public class ReportEntrancesDAO implements GenericProcedureDAO<ReportEntrances> {
 
     @Override
     public ReportEntrances execute(Object... params) throws DAOException {

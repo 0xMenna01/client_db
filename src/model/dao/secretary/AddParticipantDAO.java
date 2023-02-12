@@ -1,13 +1,14 @@
-package model.dao;
+package model.dao.secretary;
 
 
 import exception.DAOException;
+import model.dao.GenericProcedureDAO;
 import model.domain.Participant;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class AddParticipantDAO implements GenericProcedureDAO<Participant>{
+public class AddParticipantDAO implements GenericProcedureDAO<Participant> {
     @Override
     public Participant execute(Object... params) throws DAOException {
         String code = (String) params[0];

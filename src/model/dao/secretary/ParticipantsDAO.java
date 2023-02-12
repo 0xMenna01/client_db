@@ -1,6 +1,7 @@
-package model.dao;
+package model.dao.secretary;
 
 import exception.DAOException;
+import model.dao.GenericProcedureDAO;
 import model.domain.ListForTable;
 import model.domain.Participant;
 import utils.ListFactoryDAO;
@@ -10,7 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ParticipantsDAO implements GenericProcedureDAO<ListForTable<Participant>>{
+public class ParticipantsDAO implements GenericProcedureDAO<ListForTable<Participant>> {
 
     @Override
     public ListForTable<Participant> execute(Object... params) throws DAOException {

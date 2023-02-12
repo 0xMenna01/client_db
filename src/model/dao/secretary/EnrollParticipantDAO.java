@@ -1,11 +1,12 @@
-package model.dao;
+package model.dao.secretary;
 
 import exception.DAOException;
+import model.dao.GenericProcedureDAO;
 import model.domain.Course;
 import model.domain.Participant;
 import java.sql.*;
 
-public class EnrollParticipantDAO implements GenericProcedureDAO<Participant>{
+public class EnrollParticipantDAO implements GenericProcedureDAO<Participant> {
 
     @Override
     public Participant execute(Object... params) throws DAOException {

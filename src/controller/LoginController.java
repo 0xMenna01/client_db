@@ -1,7 +1,7 @@
 package controller;
 
 import exception.DAOException;
-import model.dao.LoginProcedureDAO;
+import model.dao.login.LoginProcedureDAO;
 import model.domain.Credentials;
 import view.LoginView;
 import java.io.IOException;
