@@ -1,6 +1,5 @@
 package model.domain.report;
 
-import model.domain.IntervalType;
 import model.domain.ListForTable;
 import java.sql.Date;
 import java.time.LocalDate;

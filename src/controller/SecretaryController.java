@@ -51,7 +51,6 @@ public class SecretaryController implements Controller {
                     }
                     System.exit(0);
                 }
-                default -> throw new RuntimeException("Invalid choice");
             }
 
         }

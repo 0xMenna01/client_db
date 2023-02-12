@@ -3,6 +3,7 @@ package view;
 import model.domain.*;
 import model.domain.contacts.ContactType;
 import model.domain.contacts.Contacts;
+import model.domain.report.IntervalType;
 import model.domain.report.ReportEntrances;
 import utils.Input;
 import utils.SecretaryOption;

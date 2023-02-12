@@ -1,7 +1,7 @@
 package model.dao;
 
 import exception.DAOException;
-import model.domain.IntervalType;
+import model.domain.report.IntervalType;
 import model.domain.ListForTable;
 import model.domain.report.DailyReportDetail;
 import model.domain.report.ReportEntrances;
