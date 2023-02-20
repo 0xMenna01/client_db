@@ -9,6 +9,16 @@ import java.sql.*;
 
 public class EnrollParticipantDAO implements GenericProcedureDAO<Participant> {
 
+    private static EnrollParticipantDAO instance = null;
+    private EnrollParticipantDAO(){}
+
+    public static EnrollParticipantDAO getInstance() {
+        if(instance==null) {
+            instance = new EnrollParticipantDAO();
+        }
+        return instance;
+    }
+
     @Override
     public Participant execute(Object... params) throws DAOException {
         String code = (String) params[0];

@@ -10,6 +10,17 @@ import java.sql.*;
 
 public class EntranceDAO implements GenericProcedureDAO<Entrance> {
 
+
+    private static EntranceDAO instance = null;
+    private EntranceDAO(){}
+
+    public static EntranceDAO getInstance() {
+        if(instance==null) {
+            instance = new EntranceDAO();
+        }
+        return instance;
+    }
+
     @Override
     public Entrance execute(Object... params) throws DAOException {
         String participantCode = (String) params[0];

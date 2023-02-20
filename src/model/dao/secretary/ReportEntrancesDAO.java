@@ -13,6 +13,16 @@ import java.sql.*;
 
 public class ReportEntrancesDAO implements GenericProcedureDAO<ReportEntrances> {
 
+    private static ReportEntrancesDAO instance = null;
+    private ReportEntrancesDAO(){}
+
+    public static ReportEntrancesDAO getInstance() {
+        if(instance==null) {
+            instance = new ReportEntrancesDAO();
+        }
+        return instance;
+    }
+
     @Override
     public ReportEntrances execute(Object... params) throws DAOException {
         Date fromDate = (Date) params[0];

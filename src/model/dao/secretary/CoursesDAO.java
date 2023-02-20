@@ -11,6 +11,16 @@ import java.sql.*;
 
 public class CoursesDAO implements GenericProcedureDAO<ListForTable<Course>> {
 
+    private static CoursesDAO instance = null;
+    private CoursesDAO(){}
+
+    public static CoursesDAO getInstance() {
+        if(instance==null) {
+            instance = new CoursesDAO();
+        }
+        return instance;
+    }
+
     @Override
     public ListForTable<Course> execute(Object... params) throws DAOException {
         ListForTable<Course> coursesList = null;

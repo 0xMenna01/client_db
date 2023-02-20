@@ -10,6 +10,17 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class AddParticipantDAO implements GenericProcedureDAO<Participant> {
+
+    private static AddParticipantDAO instance = null;
+    private AddParticipantDAO(){}
+
+    public static AddParticipantDAO getInstance() {
+        if(instance==null) {
+            instance = new AddParticipantDAO();
+        }
+        return instance;
+    }
+
     @Override
     public Participant execute(Object... params) throws DAOException {
         String code = (String) params[0];

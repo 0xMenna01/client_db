@@ -11,6 +11,16 @@ import java.time.Duration;
 
 public class AddLessonsDAO implements GenericProcedureDAO<Lesson> {
 
+    private static AddLessonsDAO instance = null;
+    private AddLessonsDAO(){}
+
+    public static AddLessonsDAO getInstance() {
+        if(instance==null) {
+            instance = new AddLessonsDAO();
+        }
+        return instance;
+    }
+
     @Override
     public Lesson execute(Object... params) throws DAOException {
         int numDay = (int) params[0];

@@ -14,6 +14,16 @@ import java.sql.SQLException;
 
 public class ParticipantCoursesDAO implements GenericProcedureDAO<ListForTable<Course>> {
 
+    private static ParticipantCoursesDAO instance = null;
+    private ParticipantCoursesDAO(){}
+
+    public static ParticipantCoursesDAO getInstance() {
+        if(instance==null) {
+            instance = new ParticipantCoursesDAO();
+        }
+        return instance;
+    }
+
     @Override
     public ListForTable<Course> execute(Object... params) throws DAOException {
         String participantCode = (String) params[0];
