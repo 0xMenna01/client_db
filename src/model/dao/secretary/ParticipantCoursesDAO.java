@@ -17,8 +17,8 @@ public class ParticipantCoursesDAO implements GenericProcedureDAO<ListForTable<C
     private static ParticipantCoursesDAO instance = null;
     private ParticipantCoursesDAO(){}
 
-    public static ParticipantCoursesDAO getInstance() {
-        if(instance==null) {
+    public static ParticipantCoursesDAO getInstance(){
+        if(instance == null){
             instance = new ParticipantCoursesDAO();
         }
         return instance;

@@ -3,7 +3,7 @@ package controller;
 import exception.AttributeException;
 import exception.DAOException;
 import model.dao.ConnectionFactory;
-import model.dao.secretary.*;
+import model.dao.SecretaryMangerDAO;
 import model.domain.*;
 import model.domain.report.ReportEntrances;
 import utils.SecretaryOption;
@@ -45,13 +45,10 @@ public class SecretaryController implements Controller {
                 case SHOW_PARTICIPANT_COURSES -> participantsCoursesList();
                 case SHOW_PARTICIPANTS -> participantsList();
                 case QUIT -> {
-                    try {
-                        SecretaryComponents.showExitBanner();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    SecretaryComponents.showExitBanner();
                     System.exit(0);
                 }
+
             }
 
         }
@@ -62,7 +59,7 @@ public class SecretaryController implements Controller {
         while(true){
             try {
                 newCourse = SecretaryView.provideCourse();
-                course = AddCourseDAO.getInstance().execute(
+                course = SecretaryMangerDAO.addCoursesDAO(
                         newCourse.getName(), newCourse.getPrice(), newCourse.getMinParticipants(),
                         newCourse.getMaxParticipants(), newCourse.getPool());
 
@@ -87,10 +84,11 @@ public class SecretaryController implements Controller {
         while(true){
 
             try{
-                courses = CoursesDAO.getInstance().execute();
+                courses = SecretaryMangerDAO.getCoursesDAO();
+
                 if(!courses.isEmpty()){
                     inputLesson = SecretaryView.provideLesson(courses.toStringMapsList(), courses.getColumnNames());
-                    newLesson = AddLessonsDAO.getInstance().execute(inputLesson.getDayNumber(), inputLesson.getHour(),
+                    newLesson = SecretaryMangerDAO.addLessonsDAO(inputLesson.getDayNumber(), inputLesson.getHour(),
                             inputLesson.getCourse().getId(), inputLesson.getDuration(), inputLesson.getFromDate(),
                             inputLesson.getNumOfWeeks());
 
@@ -101,6 +99,7 @@ public class SecretaryController implements Controller {
                 }
                 SecretaryView.next();
                 break;
+
             } catch (IOException | AttributeException e) {
                 throw new RuntimeException(e);
             } catch (DAOException e) {
@@ -109,19 +108,20 @@ public class SecretaryController implements Controller {
             }
 
         }
-
     }
 
     private void addParticipant(){
         Participant participant, addedParticipant;
         ListForTable<Course> courses;
+
         while(true){
             try {
-                courses = CoursesDAO.getInstance().execute();
+                courses = SecretaryMangerDAO.getCoursesDAO();
+
                 if(!courses.isEmpty()){
                     participant = SecretaryView.provideNewParticipant(courses.toStringMapsList(), courses.getColumnNames());
 
-                    addedParticipant = AddParticipantDAO.getInstance().execute(participant.getCode(), participant.getName(),
+                    addedParticipant = SecretaryMangerDAO.addParticipantDAO(participant.getCode(), participant.getName(),
                             participant.getAddress(), participant.getHouseNumber(), participant.getPostalCode(),
                             participant.getContacts().toString(), participant.getCourseSubscription().getId());
 
@@ -145,8 +145,9 @@ public class SecretaryController implements Controller {
 
     private void addPool(){
         Pool newPool;
+
         try {
-            newPool = AddPoolDAO.getInstance().execute();
+            newPool = SecretaryMangerDAO.addPoolDAO();
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
@@ -165,16 +166,17 @@ public class SecretaryController implements Controller {
         ListForTable<Participant> participants;
 
         try {
-            participants = ParticipantsDAO.getInstance().execute();
+            participants = SecretaryMangerDAO.participantsDAO();
+
             if(!participants.isEmpty()){
                 participantEntrance = SecretaryView.provideEntrance(participants.toStringMapsList(), participants.getColumnNames());
-                enteredParticipant = EntranceDAO.getInstance().execute(participantEntrance.getParticipant().getCode());
+                enteredParticipant = SecretaryMangerDAO.registerEntranceDAO(participantEntrance.getParticipant().getCode());
+
                 SecretaryComponents.showMessage(enteredParticipant.toString() + " AVVENUTO CON SUCCESSO!\n");
 
             }else{
                 SecretaryComponents.showMessage("Non è consentito effettuare alcun ingresso poichè non esistono partecipanti\n\n");
             }
-
 
         } catch (IOException | AttributeException e) {
             throw new RuntimeException(e);
@@ -187,24 +189,24 @@ public class SecretaryController implements Controller {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     private void enrollParticipant(){
         ListForTable<Participant> participants;
         ListForTable<Course> courses;
         Participant subscribedParticipant, participant;
+
         while(true){
 
             try{
-                participants = ParticipantsDAO.getInstance().execute();
+                participants = SecretaryMangerDAO.participantsDAO();
+
                 if(!participants.isEmpty()){
-                    courses = CoursesDAO.getInstance().execute();
+                    courses = SecretaryMangerDAO.getCoursesDAO();
+
                     participant = SecretaryView.provideSubscription(participants.toStringMapsList(), participants.getColumnNames(),
                             courses.toStringMapsList(), courses.getColumnNames());
-
-                    subscribedParticipant = EnrollParticipantDAO.getInstance().execute(participant.getCode(),
+                    subscribedParticipant = SecretaryMangerDAO.enrollParticipantDAO(participant.getCode(),
                             participant.getCourseSubscription().getId());
 
                     SecretaryComponents.showMessage(subscribedParticipant.toString() + " ISCRITTO CON SUCCESSO!\n");
@@ -231,10 +233,10 @@ public class SecretaryController implements Controller {
         while(true){
 
             try {
-
                 inputReport = SecretaryView.provideReport();
 
-                finalReport = ReportEntrancesDAO.getInstance().execute(inputReport.getFromDate(), inputReport.getNumOfDays());
+                finalReport = SecretaryMangerDAO.reportEntrancesDAO(inputReport.getFromDate(), inputReport.getNumOfDays());
+
                 SecretaryComponents.showMessage("\n\n");
                 SecretaryComponents.showMessage(finalReport.toString().concat("\n\n"));
 
@@ -259,7 +261,8 @@ public class SecretaryController implements Controller {
     private void coursesList() {
         ListForTable<Course> courses;
         try {
-            courses = CoursesDAO.getInstance().execute();
+            courses = SecretaryMangerDAO.getCoursesDAO();
+
             if(!courses.isEmpty()){
                 SecretaryView.printTable(courses.toStringMapsList(), courses.getColumnNames());
             }else{
@@ -280,10 +283,11 @@ public class SecretaryController implements Controller {
         ListForTable<Course> participantCourses;
 
         try {
-            allParticipants = ParticipantsDAO.getInstance().execute();
+            allParticipants = SecretaryMangerDAO.participantsDAO();
+
             if(!allParticipants.isEmpty()){
                 participant = SecretaryView.provideParticipant(allParticipants.toStringMapsList(), allParticipants.getColumnNames());
-                participantCourses = ParticipantCoursesDAO.getInstance().execute(participant.getCode());
+                participantCourses = SecretaryMangerDAO.participantCoursesDAO(participant.getCode());
 
                 SecretaryView.printTable(participantCourses.toStringMapsList(), participantCourses.getColumnNames());
             }else {
@@ -302,7 +306,8 @@ public class SecretaryController implements Controller {
     private void participantsList() {
         ListForTable<Participant> participants;
         try {
-            participants = ParticipantsDAO.getInstance().execute();
+            participants = SecretaryMangerDAO.participantsDAO();
+
             if(!participants.isEmpty()){
                 SecretaryView.printTable(participants.toStringMapsList(), participants.getColumnNames());
             }else{

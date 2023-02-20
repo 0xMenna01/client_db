@@ -14,8 +14,8 @@ public class AddLessonsDAO implements GenericProcedureDAO<Lesson> {
     private static AddLessonsDAO instance = null;
     private AddLessonsDAO(){}
 
-    public static AddLessonsDAO getInstance() {
-        if(instance==null) {
+    public static AddLessonsDAO getInstance(){
+        if(instance == null){
             instance = new AddLessonsDAO();
         }
         return instance;

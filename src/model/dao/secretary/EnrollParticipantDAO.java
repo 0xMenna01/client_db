@@ -12,8 +12,8 @@ public class EnrollParticipantDAO implements GenericProcedureDAO<Participant> {
     private static EnrollParticipantDAO instance = null;
     private EnrollParticipantDAO(){}
 
-    public static EnrollParticipantDAO getInstance() {
-        if(instance==null) {
+    public static EnrollParticipantDAO getInstance(){
+        if(instance == null){
             instance = new EnrollParticipantDAO();
         }
         return instance;

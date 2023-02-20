@@ -15,13 +15,12 @@ public class AddCourseDAO implements GenericProcedureDAO<Course> {
     private static AddCourseDAO instance = null;
     private AddCourseDAO(){}
 
-    public static AddCourseDAO getInstance() {
-        if(instance==null) {
+    public static AddCourseDAO getInstance(){
+        if(instance == null){
             instance = new AddCourseDAO();
         }
         return instance;
     }
-
 
     @Override
     public Course execute(Object... params) throws DAOException {

@@ -2,7 +2,6 @@ package view.components;
 
 import utils.Input;
 
-import java.io.IOException;
 
 public class SecretaryComponents {
 
@@ -46,7 +45,7 @@ public class SecretaryComponents {
         System.out.println("*********************************************************************");
     }
 
-    public static void showExitBanner() throws IOException{
+    public static void showExitBanner(){
         System.out.println();
         System.out.println("  ____                 _ _                ");
         System.out.println(" / ___| ___   ___   __| | |__  _   _  ___ ");

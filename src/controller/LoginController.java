@@ -13,7 +13,7 @@ public class LoginController implements Controller {
     public void start() {
         try {
             cred = LoginView.authenticate();
-            cred = LoginProcedureDAO.getInstance().execute(cred.getUsername(), cred.getPassword());
+            cred = new LoginProcedureDAO().execute(cred.getUsername(), cred.getPassword());
         } catch(IOException | DAOException e) {
             throw new RuntimeException(e);
         }

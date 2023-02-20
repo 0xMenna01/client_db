@@ -14,8 +14,8 @@ public class EntranceDAO implements GenericProcedureDAO<Entrance> {
     private static EntranceDAO instance = null;
     private EntranceDAO(){}
 
-    public static EntranceDAO getInstance() {
-        if(instance==null) {
+    public static EntranceDAO getInstance(){
+        if(instance == null){
             instance = new EntranceDAO();
         }
         return instance;

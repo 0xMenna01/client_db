@@ -11,11 +11,12 @@ import java.sql.Types;
 
 public class AddPoolDAO implements GenericProcedureDAO<Pool> {
 
+
     private static AddPoolDAO instance = null;
     private AddPoolDAO(){}
 
-    public static AddPoolDAO getInstance() {
-        if(instance==null) {
+    public static AddPoolDAO getInstance(){
+        if(instance == null){
             instance = new AddPoolDAO();
         }
         return instance;
