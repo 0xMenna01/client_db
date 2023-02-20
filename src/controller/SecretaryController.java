@@ -214,6 +214,7 @@ public class SecretaryController implements Controller {
                 inputReport = SecretaryView.provideReport();
 
                 finalReport = new ReportEntrancesDAO().execute(inputReport.getFromDate(), inputReport.getNumOfDays());
+                SecretaryComponents.showMessage("\n\n");
                 SecretaryComponents.showMessage(finalReport.toString().concat("\n\n"));
 
                 SecretaryComponents.showMessage("DETTAGLI REPORT ENTRATE GIORNALIERE\n\n");
