@@ -56,4 +56,8 @@ public class ListForTable<P extends BaseEntityForList> implements GenericListFor
 
         return listMap;
     }
+
+    public boolean isEmpty(){
+        return list.isEmpty();
+    }
 }

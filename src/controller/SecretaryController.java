@@ -88,12 +88,17 @@ public class SecretaryController implements Controller {
 
             try{
                 courses = CoursesDAO.getInstance().execute();
-                inputLesson = SecretaryView.provideLesson(courses.toStringMapsList(), courses.getColumnNames());
-                newLesson = AddLessonsDAO.getInstance().execute(inputLesson.getDayNumber(), inputLesson.getHour(),
-                        inputLesson.getCourse().getId(), inputLesson.getDuration(), inputLesson.getFromDate(),
-                        inputLesson.getNumOfWeeks());
+                if(!courses.isEmpty()){
+                    inputLesson = SecretaryView.provideLesson(courses.toStringMapsList(), courses.getColumnNames());
+                    newLesson = AddLessonsDAO.getInstance().execute(inputLesson.getDayNumber(), inputLesson.getHour(),
+                            inputLesson.getCourse().getId(), inputLesson.getDuration(), inputLesson.getFromDate(),
+                            inputLesson.getNumOfWeeks());
 
-                SecretaryComponents.showMessage("Lezione del " + newLesson.toString() + " AGGIUNTA CON SUCCESSO!\n");
+                    SecretaryComponents.showMessage("Lezione del " + newLesson.toString() + " AGGIUNTA CON SUCCESSO!\n");
+
+                }else{
+                    SecretaryComponents.showMessage("Non è consentito aggiungere lezioni poichè non esistono corsi\n\n");
+                }
                 SecretaryView.next();
                 break;
             } catch (IOException | AttributeException e) {
@@ -113,13 +118,19 @@ public class SecretaryController implements Controller {
         while(true){
             try {
                 courses = CoursesDAO.getInstance().execute();
-                participant = SecretaryView.provideNewParticipant(courses.toStringMapsList(), courses.getColumnNames());
+                if(!courses.isEmpty()){
+                    participant = SecretaryView.provideNewParticipant(courses.toStringMapsList(), courses.getColumnNames());
 
-                addedParticipant = AddParticipantDAO.getInstance().execute(participant.getCode(), participant.getName(),
-                        participant.getAddress(), participant.getHouseNumber(), participant.getPostalCode(),
-                        participant.getContacts().toString(), participant.getCourseSubscription().getId());
+                    addedParticipant = AddParticipantDAO.getInstance().execute(participant.getCode(), participant.getName(),
+                            participant.getAddress(), participant.getHouseNumber(), participant.getPostalCode(),
+                            participant.getContacts().toString(), participant.getCourseSubscription().getId());
 
-                SecretaryComponents.showMessage(addedParticipant.toString() + " AGGIUNTO CON SUCCESSO!\n");
+                    SecretaryComponents.showMessage(addedParticipant.toString() + " AGGIUNTO CON SUCCESSO!\n");
+
+                }else{
+                    SecretaryComponents.showMessage("Non è consentito aggiungere partecipanti poichè non esistono corsi\n\n");
+                }
+
                 SecretaryView.next();
                 break;
             } catch (IOException | AttributeException e) {
@@ -155,9 +166,15 @@ public class SecretaryController implements Controller {
 
         try {
             participants = ParticipantsDAO.getInstance().execute();
-            participantEntrance = SecretaryView.provideEntrance(participants.toStringMapsList(), participants.getColumnNames());
-            enteredParticipant = EntranceDAO.getInstance().execute(participantEntrance.getParticipant().getCode());
-            SecretaryComponents.showMessage(enteredParticipant.toString() + " AVVENUTO CON SUCCESSO!\n");
+            if(!participants.isEmpty()){
+                participantEntrance = SecretaryView.provideEntrance(participants.toStringMapsList(), participants.getColumnNames());
+                enteredParticipant = EntranceDAO.getInstance().execute(participantEntrance.getParticipant().getCode());
+                SecretaryComponents.showMessage(enteredParticipant.toString() + " AVVENUTO CON SUCCESSO!\n");
+
+            }else{
+                SecretaryComponents.showMessage("Non è consentito effettuare alcun ingresso poichè non esistono partecipanti\n\n");
+            }
+
 
         } catch (IOException | AttributeException e) {
             throw new RuntimeException(e);
@@ -182,15 +199,18 @@ public class SecretaryController implements Controller {
 
             try{
                 participants = ParticipantsDAO.getInstance().execute();
-                courses = CoursesDAO.getInstance().execute();
+                if(!participants.isEmpty()){
+                    courses = CoursesDAO.getInstance().execute();
+                    participant = SecretaryView.provideSubscription(participants.toStringMapsList(), participants.getColumnNames(),
+                            courses.toStringMapsList(), courses.getColumnNames());
 
-                participant = SecretaryView.provideSubscription(participants.toStringMapsList(), participants.getColumnNames(),
-                        courses.toStringMapsList(), courses.getColumnNames());
+                    subscribedParticipant = EnrollParticipantDAO.getInstance().execute(participant.getCode(),
+                            participant.getCourseSubscription().getId());
 
-                subscribedParticipant = EnrollParticipantDAO.getInstance().execute(participant.getCode(),
-                        participant.getCourseSubscription().getId());
-
-                SecretaryComponents.showMessage(subscribedParticipant.toString() + " ISCRITTO CON SUCCESSO!\n");
+                    SecretaryComponents.showMessage(subscribedParticipant.toString() + " ISCRITTO CON SUCCESSO!\n");
+                }else{
+                    SecretaryComponents.showMessage("Non esiste alcun partecipante\n\n");
+                }
 
                 SecretaryView.next();
                 break;
@@ -240,7 +260,12 @@ public class SecretaryController implements Controller {
         ListForTable<Course> courses;
         try {
             courses = CoursesDAO.getInstance().execute();
-            SecretaryView.printTable(courses.toStringMapsList(), courses.getColumnNames());
+            if(!courses.isEmpty()){
+                SecretaryView.printTable(courses.toStringMapsList(), courses.getColumnNames());
+            }else{
+                SecretaryComponents.showMessage("Non esistono corsi\n\n");
+            }
+
             SecretaryView.next();
         } catch(DAOException | IOException | AttributeException e) {
             throw new RuntimeException(e);
@@ -256,10 +281,15 @@ public class SecretaryController implements Controller {
 
         try {
             allParticipants = ParticipantsDAO.getInstance().execute();
-            participant = SecretaryView.provideParticipant(allParticipants.toStringMapsList(), allParticipants.getColumnNames());
-            participantCourses = ParticipantCoursesDAO.getInstance().execute(participant.getCode());
+            if(!allParticipants.isEmpty()){
+                participant = SecretaryView.provideParticipant(allParticipants.toStringMapsList(), allParticipants.getColumnNames());
+                participantCourses = ParticipantCoursesDAO.getInstance().execute(participant.getCode());
 
-            SecretaryView.printTable(participantCourses.toStringMapsList(), participantCourses.getColumnNames());
+                SecretaryView.printTable(participantCourses.toStringMapsList(), participantCourses.getColumnNames());
+            }else {
+                SecretaryComponents.showMessage("Non esistono partecipanti\n\n");
+            }
+
 
             SecretaryView.next();
         } catch(DAOException | AttributeException | IOException e) {
@@ -273,7 +303,12 @@ public class SecretaryController implements Controller {
         ListForTable<Participant> participants;
         try {
             participants = ParticipantsDAO.getInstance().execute();
-            SecretaryView.printTable(participants.toStringMapsList(), participants.getColumnNames());
+            if(!participants.isEmpty()){
+                SecretaryView.printTable(participants.toStringMapsList(), participants.getColumnNames());
+            }else{
+                SecretaryComponents.showMessage("Non esistono partecipanti\n\n");
+            }
+
             SecretaryView.next();
         } catch(DAOException | AttributeException | IOException e) {
             throw new RuntimeException(e);
