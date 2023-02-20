@@ -50,7 +50,7 @@ public class ReportEntrances {
     public String getFinalDate(){
         LocalDate initialDate = fromDate.toLocalDate();
 
-        return initialDate.plus(Period.ofDays(numOfDays)).toString();
+        return initialDate.plus(Period.ofDays(numOfDays-1)).toString();
     }
 
     @Override
