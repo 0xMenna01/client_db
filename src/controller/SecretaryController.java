@@ -2,6 +2,7 @@ package controller;
 
 import exception.AttributeException;
 import exception.DAOException;
+import model.dao.ConnectionFactory;
 import model.dao.secretary.*;
 import model.domain.*;
 import model.domain.report.ReportEntrances;

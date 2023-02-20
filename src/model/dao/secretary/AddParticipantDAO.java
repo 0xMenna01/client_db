@@ -2,6 +2,7 @@ package model.dao.secretary;
 
 
 import exception.DAOException;
+import model.dao.ConnectionFactory;
 import model.dao.GenericProcedureDAO;
 import model.domain.Participant;
 import java.sql.CallableStatement;

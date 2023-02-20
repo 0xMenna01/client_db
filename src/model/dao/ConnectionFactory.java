@@ -1,4 +1,4 @@
-package model.dao.secretary;
+package model.dao;
 
 import java.io.FileInputStream;
 import java.io.IOException;

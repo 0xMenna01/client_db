@@ -10,7 +10,6 @@ public class ReportEntrances {
     private final Date fromDate;
     private final IntervalType interval;
     private int numOfDays;
-
     private Integer entrances;
     private Integer subscriptions;
     private ListForTable<DailyReportDetail> details;

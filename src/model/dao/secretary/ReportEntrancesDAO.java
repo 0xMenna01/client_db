@@ -1,6 +1,7 @@
 package model.dao.secretary;
 
 import exception.DAOException;
+import model.dao.ConnectionFactory;
 import model.dao.GenericProcedureDAO;
 import model.domain.report.IntervalType;
 import model.domain.ListForTable;
