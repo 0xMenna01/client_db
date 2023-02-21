@@ -95,7 +95,7 @@ public class Input {
                 choice = dateFormat.parse(input);
                 break;
             } catch (ParseException e) {
-                System.out.print("Formato non valido (yyyy-mm-gg): ");
+                System.out.print("Formato non valido (YYYY-MM-gg): ");
             }
         }
 
