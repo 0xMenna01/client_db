@@ -5,7 +5,6 @@ public class AttributeException extends Exception{
     public AttributeException() {
         super();
     }
-    
 
     public AttributeException(String message, Throwable cause) {
         super(message, cause);
